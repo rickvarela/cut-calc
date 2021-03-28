@@ -1,0 +1,23 @@
+.CutList {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.CutListHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #E0E1E1;
+}
+
+.CutListDisplay {
+    overflow-y: auto;
+}
+
+
+
+svg {
+    stroke-width: 4px;
+}

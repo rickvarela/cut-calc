@@ -1,0 +1,28 @@
+.MemberList {
+    flex-grow: 1;
+}
+
+.MemberTable {
+    width: 100%;
+}
+
+.MemberHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #E0E1E1;
+}
+
+.MemberTableItem {
+    width: 100%;
+}
+
+.MemberTableDelete {
+    width: 80px;
+}
+
+.MemberTableID {
+    width: 30px;
+    text-align: center;
+}

@@ -1,0 +1,24 @@
+.StockList {
+    flex-grow: 1;
+}
+
+.StockTable {
+    width: 100%;
+}
+
+.StockHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #E0E1E1;
+}
+
+.StockTableItem {
+    width: 100%;
+}
+
+.StockTableID {
+    width: 30px;
+    text-align: center;
+}

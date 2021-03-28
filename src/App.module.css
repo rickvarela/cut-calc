@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
+
+.App {
+    height: 100vh;
+    width:  100vw;
+    font-family: 'Lexend', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.AppMain {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.AppMenu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 4px solid #2D3142;
+    min-width: 250px;
+}
+
+.AppHeader {
+    margin: 0;
+    background-color: #2D3142;
+}
+
+h1 {
+    margin: 0;
+    padding: 5px;
+    color: white;
+}
+
+@media (max-width: 800px) {
+
+    .AppMain {
+        flex-direction: column;
+        min-width: none;
+    }
+
+}
