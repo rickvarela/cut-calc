@@ -64,16 +64,22 @@ const CutListDisplay = ({cutState}) => {
 
 const CutListMember = ({stockMember, index, DISPLAY_PROPS, width, scaleAdjust45}) => {
 
-    console.log(width)
     const memberScaleFactor = 90.0 / stockMember.length
     
     let xCord = DISPLAY_PROPS.X
     let membersDisplayList = []
 
+    const displayID = (cutMember) => {
+        let memberLength = (cutMember.length * memberScaleFactor) / DISPLAY_PROPS.SCALE_FACTOR
+        let textLength = 25 + cutMember.index.toString().length * 25
+
+        return (memberLength > textLength)
+    }
+
     for (let cutMember of stockMember.cutMembers) {
         membersDisplayList.push(
             <g key={cutMember.id}>
-                {(cutMember.length * memberScaleFactor) > 3 && <text x={xCord + 0.5} y={DISPLAY_PROPS.Y + scaleAdjust45(4.5) + (scaleAdjust45(5) + scaleAdjust45(2)) * index} fontSize={DISPLAY_PROPS.SCALE_FACTOR * 32} >#{cutMember.index}</text>}
+                {displayID(cutMember) && <text x={xCord + 0.5} y={DISPLAY_PROPS.Y + scaleAdjust45(4.5) + (scaleAdjust45(5) + scaleAdjust45(2)) * index} fontSize={DISPLAY_PROPS.SCALE_FACTOR * 32} >#{cutMember.index}</text>}
                 <rect x={xCord} y={DISPLAY_PROPS.Y + (scaleAdjust45(5) + scaleAdjust45(2)) * index} width={cutMember.length * memberScaleFactor} height={scaleAdjust45(5)} fill='none' stroke='#3891A6' vectorEffect='non-scaling-stroke'/>
             </g>
         )
