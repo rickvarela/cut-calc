@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid'
+import { useState, useEffect } from 'react'
 
 export const calcCutList = (cutMembers, stockMember) => {
     const sortCutMembers = cutMembers.slice(0).sort((a,b) => a.length > b.length ? 1 : -1)
@@ -29,3 +30,30 @@ export const calcCutList = (cutMembers, stockMember) => {
     }
     return totalStockMembers
 }
+
+export const useContainerDimensions = myRef => {
+    const getDimensions = () => ({
+      width: myRef.current.offsetWidth,
+      height: myRef.current.offsetHeight
+    })
+  
+    const [dimensions, setDimensions] = useState({ width: 1, height: 1 })
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setDimensions(getDimensions())
+      }
+  
+      if (myRef.current) {
+        setDimensions(getDimensions())
+      }
+  
+      window.addEventListener("resize", handleResize)
+  
+      return () => {
+        window.removeEventListener("resize", handleResize)
+      }
+    }, [myRef])
+  
+    return dimensions;
+};

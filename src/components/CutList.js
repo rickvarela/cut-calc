@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { calcCutList } from '../utils/utils'
+import { calcCutList, useContainerDimensions } from '../utils/utils'
 
 import styles from './CutList.module.css'
 
@@ -27,33 +27,6 @@ const CutListHeader = ({runCutList}) => {
     )
 }
 
-const useContainerDimensions = myRef => {
-    const getDimensions = () => ({
-      width: myRef.current.offsetWidth,
-      height: myRef.current.offsetHeight
-    })
-  
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  
-    useEffect(() => {
-      const handleResize = () => {
-        setDimensions(getDimensions())
-      }
-  
-      if (myRef.current) {
-        setDimensions(getDimensions())
-      }
-  
-      window.addEventListener("resize", handleResize)
-  
-      return () => {
-        window.removeEventListener("resize", handleResize)
-      }
-    }, [myRef])
-  
-    return dimensions;
-};
-
 const CutListDisplay = ({cutState}) => {
     const componentRef = useRef()
     const { width, height } = useContainerDimensions(componentRef)
@@ -66,18 +39,30 @@ const CutListDisplay = ({cutState}) => {
         Y: 5
     } 
 
+    const scaleAdjust45 = (length) => {
+        if (5 / DISPLAY_PROPS.SCALE_FACTOR < 45) {
+            return DISPLAY_PROPS.SCALE_FACTOR * length * 9
+        } else {
+            return length
+        }
+    }
+
+    const scaleAdjust = (length) => {
+            return DISPLAY_PROPS.SCALE_FACTOR * length * 9
+    }
+
     return (
         <div className={styles.CutListDisplay} ref={componentRef}>
-            <svg width='100%' viewBox={`0 0 100 ${DISPLAY_PROPS.Y + cutState.length * (DISPLAY_PROPS.STOCK_HEIGHT + DISPLAY_PROPS.GAP_HEIGHT)}`} >
+            <svg width='100%' viewBox={`0 0 100 ${DISPLAY_PROPS.Y + cutState.length * (scaleAdjust45(5) + scaleAdjust45(2))}`} >
             {cutState.map((stockMember, index) => 
-                <CutListMember stockMember={stockMember} key={stockMember.id} index={index} DISPLAY_PROPS={DISPLAY_PROPS} width={width} />
+                <CutListMember stockMember={stockMember} key={stockMember.id} index={index} DISPLAY_PROPS={DISPLAY_PROPS} width={width} scaleAdjust45={scaleAdjust45} />
             )}
             </svg>
         </div>
     )
 }
 
-const CutListMember = ({stockMember, index, DISPLAY_PROPS, width}) => {
+const CutListMember = ({stockMember, index, DISPLAY_PROPS, width, scaleAdjust45}) => {
 
     console.log(width)
     const memberScaleFactor = 90.0 / stockMember.length
@@ -88,15 +73,15 @@ const CutListMember = ({stockMember, index, DISPLAY_PROPS, width}) => {
     for (let cutMember of stockMember.cutMembers) {
         membersDisplayList.push(
             <g key={cutMember.id}>
-                {(cutMember.length * memberScaleFactor) > 3 && <text x={xCord + 0.5} y={DISPLAY_PROPS.Y + 4.5 + (DISPLAY_PROPS.STOCK_HEIGHT + DISPLAY_PROPS.GAP_HEIGHT) * index} fontSize={DISPLAY_PROPS.SCALE_FACTOR * 32} >#{cutMember.index}</text>}
-                <rect x={xCord} y={DISPLAY_PROPS.Y + (DISPLAY_PROPS.STOCK_HEIGHT + DISPLAY_PROPS.GAP_HEIGHT) * index} width={cutMember.length * memberScaleFactor} height="5" fill='none' stroke='#3891A6' vectorEffect='non-scaling-stroke'/>
+                {(cutMember.length * memberScaleFactor) > 3 && <text x={xCord + 0.5} y={DISPLAY_PROPS.Y + scaleAdjust45(4.5) + (scaleAdjust45(5) + scaleAdjust45(2)) * index} fontSize={DISPLAY_PROPS.SCALE_FACTOR * 32} >#{cutMember.index}</text>}
+                <rect x={xCord} y={DISPLAY_PROPS.Y + (scaleAdjust45(5) + scaleAdjust45(2)) * index} width={cutMember.length * memberScaleFactor} height={scaleAdjust45(5)} fill='none' stroke='#3891A6' vectorEffect='non-scaling-stroke'/>
             </g>
         )
         xCord += cutMember.length * memberScaleFactor
     }
 
     return [
-        <rect key={stockMember.id} x="5" y={DISPLAY_PROPS.Y + (DISPLAY_PROPS.STOCK_HEIGHT + DISPLAY_PROPS.GAP_HEIGHT) * index} width="90" height="5" fill='#E0E1E1' stroke='#CBCDCD' vectorEffect='non-scaling-stroke' />,
+        <rect key={stockMember.id} x="5" y={DISPLAY_PROPS.Y + (scaleAdjust45(5) + scaleAdjust45(2)) * index} width="90" height={scaleAdjust45(5)} fill='#E0E1E1' stroke='#CBCDCD' vectorEffect='non-scaling-stroke' />,
         ...membersDisplayList
     ]
 }

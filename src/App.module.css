@@ -39,6 +39,7 @@ h1 {
     .AppMain {
         flex-direction: column;
         min-width: none;
+        overflow: auto;
     }
 
 }
