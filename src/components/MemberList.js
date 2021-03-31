@@ -4,7 +4,9 @@ export const MemberList = ({ cutMembers, actions }) => {
     return (
         <div className={styles.MemberList}>
             <MemberHeader actions={actions}/>
+            <div className={styles.MemberBody}>
             <MemberTable cutMembers={cutMembers} actions={actions}/>
+            </div>
         </div>
     )
 }

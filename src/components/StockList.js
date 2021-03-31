@@ -4,7 +4,9 @@ export const StockList = ({stockMember, actions}) => {
     return (
         <div className={styles.StockList}>
             <StockHeader />
-            <StockTable stockMember={stockMember} actions={actions}/>
+            <div className={styles.StockBody}>
+                <StockTable stockMember={stockMember} actions={actions}/>
+            </div>
         </div>
     )
 }
